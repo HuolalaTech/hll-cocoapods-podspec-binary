@@ -1,0 +1,7 @@
+program:
+   pod_name: AFNetworking
+   pod_version: 4.0.1
+   repo: huolala-hd-wp-specs-ios
+   sources: "xxxx"
+   swift: true
+   xcframework: true

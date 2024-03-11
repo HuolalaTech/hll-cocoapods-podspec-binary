@@ -1,0 +1,20 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "ruby_lsp",
+            "request": "launch",
+            "name": "Debug program",
+            "program": "bundle exec pod mbuild AFNetworking 4.0.1",
+            "env": {
+                "LANG": "en_US.UTF-8",
+                "https_proxy": "http://127.0.0.1:7890",
+                "http_proxy": "http://127.0.0.1:7890",
+                "all_proxy": "socks5://127.0.0.1:7890"
+            }
+        }
+    ]
+}
