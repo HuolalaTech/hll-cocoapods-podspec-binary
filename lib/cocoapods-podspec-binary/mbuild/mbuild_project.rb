@@ -6,17 +6,18 @@ require 'cocoapods'
 class BuildProject
   def initialize
     @config_instance = MBuildConfig.instance
-    @project_dir = File.join(MBuildConfig.instance.mbuild_dir, 'BinaryProj')
+    @project_dir = File.join(MBuildConfig.instance.mbuild_dir, 'BinaryProj/Example')
   end
 
   def prepare_project
-    example_dir = @project_dir
+    example_dir = File.join(MBuildConfig.instance.mbuild_dir, 'BinaryProj')
     if File.directory?(example_dir)
       Git.open(example_dir).reset_hard
+      Git.open(example_dir).clean(force: true)
       Git.open(example_dir).pull
     else
       MBuildFileUtils.create_folder(@project_dir)
-      example_url = 'ssh://git@gitlab.huolala.cn:56358/group-wp-sdk/binary-example-ios.git'
+      example_url = 'git@github.com:HuolalaTech/hll-cocoapods-podspec-binary.git'
       Git.clone(example_url, example_dir)
     end
   end
@@ -33,10 +34,11 @@ class BuildProject
     podfile_content = File.read(podfile_path)
     pod_name = @config_instance.pod_name
     pod_version = @config_instance.pod_version
-    new_content = podfile_content.gsub('BINARY_NAME', pod_name).gsub('BINARY_VERSION', pod_version).gsub(
-      'cocoapods-mdapbox', 'cocoapods-podspec-binary'
-    )
-    new_content += "source \"#{@config_instance.sources}\"\n" if @config_instance.sources
+    new_content = podfile_content.gsub('BINARY_NAME', pod_name).gsub('BINARY_VERSION', pod_version)
+    if @config_instance.sources
+      new_content.prepend(@config_instance.sources.split(',').map { |it| "source \"#{it.strip}\"\n" }.join)
+    end
+
     File.open(podfile_path, 'w') { |file| file.puts new_content }
   end
 

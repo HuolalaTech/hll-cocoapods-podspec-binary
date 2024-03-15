@@ -42,6 +42,7 @@ module Pod
         @pod_version = argv.shift_argument
         @config_instance = MBuildConfig.instance
         @build_dir = @config_instance.mbuild_dir
+        @sources = argv.option('sources')
         super
       end
 
@@ -49,7 +50,7 @@ module Pod
         [
           ['--framework', 'Used to generate the framework '],
           ['--xcframework', 'Used to generate the xcframework '],
-          ['--sources', 'The sources from which to pull dependent pods ']
+          ['--sources=[sources]', 'The sources from which to pull dependent pods ']
         ].concat(super).reject { |(name, _)| name == 'name' }
       end
 
@@ -87,7 +88,7 @@ module Pod
 
       def build_binary
         puts "Commencing the build of #{@pod_name}:#{@pod_version}."
-        project_dir = File.join(@build_dir, 'BinaryProj')
+        project_dir = File.join(@build_dir, 'BinaryProj/Example')
         Dir.chdir(project_dir)
         binary_type = @xcframework ? BinaryType::XCFRAMEWORK : BinaryType::FRAMEWORK
         build_binary = BuildBinary.new(binary_type)
@@ -98,7 +99,8 @@ module Pod
       def export_binary
         puts 'Exporting binary files.'
         export_dir = @config_instance.root_dir
-        FileUtils.cp_r("#{@build_dir}/#{@pod_name}", export_dir)
+        FileUtils.cp_r("#{@build_dir}/#{@pod_name}-#{@pod_version}", export_dir)
+        FileUtils.rm_rf("#{@build_dir}/#{@pod_name}-#{@pod_version}")
         puts 'Task execution completed.'
       end
     end

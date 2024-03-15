@@ -56,7 +56,7 @@ class BuildBinary
   end
 
   def generate_final_binary(framework)
-    binary_dir = "#{@config_instance.mbuild_dir}/#{@pod_name}"
+    binary_dir = "#{@config_instance.mbuild_dir}/#{@pod_name}-#{@pod_version}"
     Dir.mkdir(binary_dir) unless Dir.exist? binary_dir
     FileUtils.cp_r(framework, binary_dir)
     podspec_file = "#{Dir.pwd}/#{@pod_name}.podspec.json"
@@ -64,8 +64,8 @@ class BuildBinary
   end
 
   def generate_cache_file
-    binary_dir = "#{@config_instance.mbuild_dir}/#{@pod_name}/Podfile.lock"
-    FileUtils.cp_r("#{@config_instance.mbuild_dir}/project/Podfile.lock", binary_dir)
+    binary_dir = "#{@config_instance.mbuild_dir}/#{@pod_name}-#{@pod_version}/Podfile.lock"
+    FileUtils.cp_r("#{@config_instance.mbuild_dir}/BinaryProj/Example/Podfile.lock", binary_dir)
   end
 
   private

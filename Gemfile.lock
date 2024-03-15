@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cocoapods-podspec-binary (0.0.2)
+    cocoapods-podspec-binary (0.0.1)
 
 PATH
   remote: cocoapods

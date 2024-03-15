@@ -15,6 +15,7 @@ module Pod
 
     def generate_podspec
       binary_spec_version
+      binary_spec_source
       binary_spec_framework
       binary_spec_lib
       binary_spec_public_header_files
@@ -28,6 +29,10 @@ module Pod
       podspec_file = "#{Dir.pwd}/#{@pod_name}.podspec.json"
       podspec_json = JSON.pretty_generate(@podspec_hash)
       File.write(podspec_file, podspec_json)
+    end
+
+    def binary_spec_source
+      @podspec_hash['source'] = { 'http': 'The location where files are stored' }
     end
 
     def binary_spec_version
